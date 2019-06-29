@@ -39,7 +39,7 @@ const slowApp = async function(req, res) {
 
     res.status(200).json({
         data: {
-            message: "Hello World!",
+            message: "Hello world extended!",
             randomNum: Math.random() * 100,
             apiData
         },
