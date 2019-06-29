@@ -3,7 +3,7 @@
  */
 
 const app = require('../index').index;
-const debug = require('debug')('io-extended-19:server');
+const debug =require('../index').debug;
 const http = require('http');
 
 /**

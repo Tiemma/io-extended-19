@@ -4,7 +4,7 @@ More stackdriver feature docs here:
  */
 require('@google-cloud/trace-agent').start({ enhancedDatabaseReporting: true});
 
-
+const debug = require('debug')('io-extended-19:server');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -35,6 +35,8 @@ const slowApp = async function(req, res) {
     // This outgoing HTTP request should be captured by Trace
     const apiData = (await got(DISCOVERY_URL, { json: true })).body.items.map((item) => item.name);
 
+    setTimeout(() => debug(''))
+
     res.status(200).json({
         data: {
             message: "Hello World!",
@@ -46,9 +48,31 @@ const slowApp = async function(req, res) {
     })
 };
 
+const trace = function (req, res) {
+    const DISCOVERY_URL = 'https://www.googleapis.com/discovery/v1/apis';
+
+    // This outgoing HTTP request should be captured by Trace
+    got(DISCOVERY_URL, { json: true })
+        .then((response) => {
+            const names = response.body.items.map((item) => item.name);
+            res
+                .status(200)
+                .send(names.join('\n'))
+                .end();
+        })
+        .catch((err) => {
+            logger.error(err);
+            res
+                .status(500)
+                .end();
+        });
+};
+
 router.get('/', app);
 router.get('/slow', slowApp);
+router.get('/trace', trace);
+
 
 index.use('/', router);
 
-module.exports = { app, slowApp, index };
+module.exports = { app, slowApp, trace, index, debug };
