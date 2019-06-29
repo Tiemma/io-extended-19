@@ -13,6 +13,7 @@ describe('Index Endpoint Test: /', function() {
             .get(`/`)
             .end((err, res) => {
                 expect(res).to.have.status(200);
+
                 expect(Object.keys(res.body)).to.have.contains('data');
                 expect(Object.keys(res.body)).to.have.contains('message');
                 expect(Object.keys(res.body)).to.have.contains('status');
@@ -22,7 +23,6 @@ describe('Index Endpoint Test: /', function() {
 
                 expect(res.body.data.randomNum).to.be.greaterThan(0);
                 expect(res.body.data.randomNum).to.be.lessThan(100);
-
                 expect(res.body.message).equals("Hello world!");
                 expect(res.body.status).equals("OK");
                 done();

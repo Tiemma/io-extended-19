@@ -51,5 +51,4 @@ router.get('/slow', slowApp);
 
 index.use('/', router);
 
-
 module.exports = { app, slowApp, index };
